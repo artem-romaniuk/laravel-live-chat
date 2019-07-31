@@ -1,32 +1,44 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+window._ = require('lodash');
 
-require('./bootstrap');
+try {
+    window.Popper = require('popper.js').default;
+    window.$ = window.jQuery = require('jquery');
 
-window.Vue = require('vue');
+    require('bootstrap');
+} catch (e) {}
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
+window.axios = require('axios');
 
-// const files = require.context('./', true, /\.vue$/i);
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+let token = document.head.querySelector('meta[name="csrf-token"]');
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+if (token) {
+    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+} else {
+    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+}
 
-const app = new Vue({
-    el: '#app',
+
+import Echo from "laravel-echo"
+window.io = require('socket.io-client');
+
+let echo = new Echo({
+    broadcaster: 'socket.io',
+    host: 'http://localhost:6001' // значение должно быть равным authHost из конфига + порт
 });
+
+echo
+    .channel(`live-chat`)
+    .listen('message-live-chat', (e) => {
+        console.log(e);
+        /**
+         * Действия, происходящие при получении события клиентом
+         * напр. console.log(e);
+         */
+        // comments.list.find('ul > li.empty').remove();
+        // comments.list.find('ul').append(e.view);
+        // comments.count.text(parseInt(comments.count.text()) + 1);
+        // comments.list.scrollTop(9999999999);
+        // comments.sound.play();
+    });
