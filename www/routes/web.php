@@ -14,3 +14,10 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::group(['prefix' => 'chat', 'as' => 'chat.', 'middleware' => ['auth']], function () {
+    Route::get('', 'ChatController@index')->name('index');
+    Route::post('', 'ChatController@send')->name('send');
+});
