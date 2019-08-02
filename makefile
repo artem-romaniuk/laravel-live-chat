@@ -7,7 +7,7 @@ build:
 
 start: #start docker containers @docker-compose up -d
 	@docker-compose up -d
-	@cd www $$ sudo chown -R www-data storage bootstrap
+	@cd www && sudo chown -R www-data storage bootstrap
 	@docker-compose exec $(container_php) composer install --ignore-platform-reqs
 
 migrate:
