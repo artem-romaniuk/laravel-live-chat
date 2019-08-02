@@ -47067,6 +47067,31 @@ var echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
 });
 echo.channel("livechat_database_live-chat").listen('.message-live-chat', function (e) {
   console.log(e.message);
+}); // Get all messages
+
+$.ajax({
+  method: "GET",
+  url: "/api/chat",
+  data: {}
+}).done(function (response) {
+  console.log(response);
+}); // Send message
+
+$('#submitMessage').on('click', function (e) {
+  e.preventDefault();
+  var messageData = new FormData(document.forms.send_message);
+  $.ajax({
+    method: "POST",
+    url: "/api/chat",
+    data: messageData,
+    statusCode: {
+      503: function _() {
+        console.log('Error send message');
+      }
+    }
+  }).done(function (response) {
+    console.log(response);
+  });
 });
 
 /***/ }),

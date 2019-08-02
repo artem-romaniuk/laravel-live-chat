@@ -11,13 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
-Route::group(['prefix' => 'chat', 'as' => 'chat.', 'middleware' => ['auth']], function () {
-    Route::get('', 'ChatController@index')->name('index');
-    Route::post('', 'ChatController@send')->name('send');
+Route::group(['namespace' => 'Front'], function () {
+    Route::get('/', 'ChatController@index')->name('home');
+});
+
+Route::group(['namespace' => 'Front', 'as' => 'chat.', 'middleware' => ['auth']], function () {
+    Route::get('chat', 'ChatController@chat')->name('room');
 });

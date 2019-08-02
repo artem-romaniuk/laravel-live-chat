@@ -9,11 +9,17 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    @auth
+        <script>
+            const user = {
+                api_token: "{{ Auth::user()->api_token }}"
+            }
+        </script>
+    @endauth
+
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
-
-
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">

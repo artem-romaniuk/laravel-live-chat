@@ -68,7 +68,7 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        <a href="{{ route('chat.index') }}">{{ __('Go to chat') }}</a>
+                        <a href="{{ route('chat.room') }}">{{ __('Go to chat') }}</a>
                     @else
                         <a href="{{ route('login') }}">{{ __('Login') }}</a>
 

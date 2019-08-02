@@ -2,8 +2,8 @@
 
 namespace App\Events;
 
-use App\ChatMessage;
 use Illuminate\Broadcasting\Channel;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -17,7 +17,7 @@ class SendMessage implements ShouldBroadcast
 
     public $message;
 
-    public function __construct(ChatMessage $message)
+    public function __construct(JsonResource $message)
     {
         $this->message = $message;
     }
