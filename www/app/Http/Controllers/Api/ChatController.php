@@ -25,7 +25,7 @@ class ChatController extends Controller
 
             event(new SendMessage(new ChatMessageResource($message)));
 
-            return 201;
+            return response()->json(['status' => 'success'], 201);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 503);
         }

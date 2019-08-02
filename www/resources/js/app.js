@@ -19,7 +19,10 @@ if (token) {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
-
+function scrollDown() {
+    var chat_scroll = $('#messagesContainer');
+    chat_scroll.scrollTop(chat_scroll.prop('scrollHeight'));
+}
 
 import Echo from "laravel-echo"
 window.io = require('socket.io-client');
@@ -29,36 +32,59 @@ let echo = new Echo({
     host: '0.0.0.0:6001'
 });
 
+const messagesContainer = $('#messagesContainer');
+
 echo
     .channel(`livechat_database_live-chat`)
     .listen('.message-live-chat', (e) => {
-        console.log(e.message);
+        messagesContainer.append('<li><p>' + e.message.message + '</p><span>' + e.message.user.name + ' (' + e.message.created_at + ')</span></li>');
+        scrollDown();
     });
 
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        "Accept":"application/json",
+        "Authorization":"Bearer " + user.api_token
+    }
+});
 
 // Get all messages
 $.ajax({
     method: "GET",
-    url: "/api/chat",
-    data: {}
+    url: "/api/chat"
 })
     .done(function(response) {
-        console.log(response);
+        if (response.data.length > 0) {
+            response.data.forEach(function (item) {
+                messagesContainer.append('<li><p>' + item.message + '</p><span>' + item.user.name + ' (' + item.created_at + ')</span></li>');
+                scrollDown();
+            });
+        }
     });
 
 // Send message
 $('#submitMessage').on('click', function (e) {
     e.preventDefault();
+    const submitButton = $(this);
+    const messageField = $('textarea[name=message]');
 
-    const messageData = new FormData(document.forms.send_message);
+    submitButton.prop('disabled', true);
 
     $.ajax({
         method: "POST",
         url: "/api/chat",
-        data: messageData,
+        data: {
+            'message': messageField.val(),
+            'user_id': user.id
+        },
         statusCode: {
+            201: function () {
+                submitButton.prop('disabled', false);
+                messageField.val('');
+            },
             503: function() {
-                console.log('Error send message');
+                submitButton.prop('disabled', false);
             }
         }
     })

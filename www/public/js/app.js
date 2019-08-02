@@ -47059,34 +47059,61 @@ if (token) {
   console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
+function scrollDown() {
+  var chat_scroll = $('#messagesContainer');
+  chat_scroll.scrollTop(chat_scroll.prop('scrollHeight'));
+}
+
 
 window.io = __webpack_require__(/*! socket.io-client */ "./node_modules/socket.io-client/lib/index.js");
 var echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'socket.io',
   host: '0.0.0.0:6001'
 });
+var messagesContainer = $('#messagesContainer');
 echo.channel("livechat_database_live-chat").listen('.message-live-chat', function (e) {
-  console.log(e.message);
+  messagesContainer.append('<li><p>' + e.message.message + '</p><span>' + e.message.user.name + ' (' + e.message.created_at + ')</span></li>');
+  scrollDown();
+});
+$.ajaxSetup({
+  headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+    "Accept": "application/json",
+    "Authorization": "Bearer " + user.api_token
+  }
 }); // Get all messages
 
 $.ajax({
   method: "GET",
-  url: "/api/chat",
-  data: {}
+  url: "/api/chat"
 }).done(function (response) {
-  console.log(response);
+  if (response.data.length > 0) {
+    response.data.forEach(function (item) {
+      messagesContainer.append('<li><p>' + item.message + '</p><span>' + item.user.name + ' (' + item.created_at + ')</span></li>');
+      scrollDown();
+    });
+  }
 }); // Send message
 
 $('#submitMessage').on('click', function (e) {
   e.preventDefault();
-  var messageData = new FormData(document.forms.send_message);
+  var submitButton = $(this);
+  var messageField = $('textarea[name=message]');
+  submitButton.prop('disabled', true);
   $.ajax({
     method: "POST",
     url: "/api/chat",
-    data: messageData,
+    data: {
+      'message': messageField.val(),
+      'user_id': user.id
+    },
     statusCode: {
+      201: function _() {
+        submitButton.prop('disabled', false);
+        messageField.val('');
+      },
       503: function _() {
-        console.log('Error send message');
+        submitButton.prop('disabled', false);
       }
     }
   }).done(function (response) {

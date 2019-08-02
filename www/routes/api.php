@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['as' => 'api.chat.', 'namespace' => 'Api', 'middleware' => [/*'auth:api'*/]], function () {
+Route::group(['as' => 'api.chat.', 'namespace' => 'Api', 'middleware' => ['auth:api']], function () {
     Route::get('chat', 'ChatController@getMessages')->name('messages');
     Route::post('chat', 'ChatController@postMessage')->name('post');
 });

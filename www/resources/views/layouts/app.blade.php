@@ -12,6 +12,7 @@
     @auth
         <script>
             const user = {
+                id: '{{ Auth::user()->id }}',
                 api_token: "{{ Auth::user()->api_token }}"
             }
         </script>

@@ -10644,3 +10644,32 @@ a.text-dark:focus {
   }
 }
 
+.messages-container {
+  background: #ffffff;
+  height: 350px;
+  color: #000000;
+  list-style: none;
+  padding: 5px;
+  overflow-y: scroll;
+}
+
+.messages-container li {
+  background: #bdc8ff;
+  margin: 5px;
+  border-radius: 5px;
+  width: 50%;
+  padding: 5px 15px;
+}
+
+.messages-container li p {
+  margin: 0 0 3px 0;
+  font-size: 1.2em;
+}
+
+.messages-container li span {
+  text-align: right;
+  display: block;
+  font-style: italic;
+  font-size: 0.8em;
+}
+
