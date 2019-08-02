@@ -20,25 +20,17 @@ if (token) {
 }
 
 
+
 import Echo from "laravel-echo"
 window.io = require('socket.io-client');
 
 let echo = new Echo({
     broadcaster: 'socket.io',
-    host: 'http://localhost:6001' // значение должно быть равным authHost из конфига + порт
+    host: '0.0.0.0:6001'
 });
 
 echo
-    .channel(`live-chat`)
-    .listen('message-live-chat', (e) => {
-        console.log(e);
-        /**
-         * Действия, происходящие при получении события клиентом
-         * напр. console.log(e);
-         */
-        // comments.list.find('ul > li.empty').remove();
-        // comments.list.find('ul').append(e.view);
-        // comments.count.text(parseInt(comments.count.text()) + 1);
-        // comments.list.scrollTop(9999999999);
-        // comments.sound.play();
+    .channel(`livechat_database_live-chat`)
+    .listen('.message-live-chat', (e) => {
+        console.log(e.message);
     });

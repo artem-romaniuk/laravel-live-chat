@@ -47063,20 +47063,10 @@ if (token) {
 window.io = __webpack_require__(/*! socket.io-client */ "./node_modules/socket.io-client/lib/index.js");
 var echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'socket.io',
-  host: 'http://localhost:6001' // значение должно быть равным authHost из конфига + порт
-
+  host: '0.0.0.0:6001'
 });
-echo.channel("live-chat").listen('message-live-chat', function (e) {
-  console.log(e);
-  /**
-   * Действия, происходящие при получении события клиентом
-   * напр. console.log(e);
-   */
-  // comments.list.find('ul > li.empty').remove();
-  // comments.list.find('ul').append(e.view);
-  // comments.count.text(parseInt(comments.count.text()) + 1);
-  // comments.list.scrollTop(9999999999);
-  // comments.sound.play();
+echo.channel("livechat_database_live-chat").listen('.message-live-chat', function (e) {
+  console.log(e.message);
 });
 
 /***/ }),

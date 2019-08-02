@@ -24,7 +24,7 @@ class SendMessage implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        return new PresenceChannel('live-chat');
+        return new Channel('live-chat');
     }
 
     public function broadcastAs()
