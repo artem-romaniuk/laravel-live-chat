@@ -23,6 +23,9 @@ services:
             - ./images/php-fpm/local.ini:/usr/local/etc/php/conf.d/local.ini
         restart: unless-stopped
         tty: true
+        ports:
+            - 9000:9000
+            - 6001:6001
         environment:
             SERVICE_NAME: php-fpm
             SERVICE_TAGS: dev
