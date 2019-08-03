@@ -18,7 +18,7 @@
                             <div class="form-group">
                                 <label id="userNameLabel"></label>
                                 <textarea class="form-control" name="message" placeholder="{{ __('Write your message here...') }}"></textarea>
-                                <small id="emailHelp" class="form-text text-muted"></small>
+                                <div class="errors-container"></div>
                             </div>
                             <button id="submitMessage" type="submit" class="btn btn-primary">{{ __('Send') }}</button>
                         </form>

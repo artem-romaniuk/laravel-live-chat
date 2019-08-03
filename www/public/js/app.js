@@ -47099,6 +47099,8 @@ $('#submitMessage').on('click', function (e) {
   e.preventDefault();
   var submitButton = $(this);
   var messageField = $('textarea[name=message]');
+  var errorsContainer = $('.errors-container');
+  errorsContainer.html('');
   submitButton.prop('disabled', true);
   $.ajax({
     method: "POST",
@@ -47112,12 +47114,18 @@ $('#submitMessage').on('click', function (e) {
         submitButton.prop('disabled', false);
         messageField.val('');
       },
+      422: function _(response) {
+        submitButton.prop('disabled', false);
+        var errors = response.responseJSON.errors.message;
+        errors.forEach(function (item) {
+          errorsContainer.html('<span class="badge badge-danger">' + item + '</span>');
+        });
+      },
       503: function _() {
         submitButton.prop('disabled', false);
       }
     }
-  }).done(function (response) {
-    console.log(response);
+  }).done(function (response) {//console.log(response);
   });
 });
 

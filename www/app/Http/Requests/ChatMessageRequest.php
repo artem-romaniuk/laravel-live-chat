@@ -14,8 +14,8 @@ class ChatMessageRequest extends FormRequest
     public function rules()
     {
         return [
-            'message' => '',
-            'user_id' => '',
+            'message' => 'required|string|max:30000',
+            'user_id' => 'required|integer',
         ];
     }
 }
